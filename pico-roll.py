@@ -1,11 +1,8 @@
-# This example shows you a simple, non-interrupt way of reading Pico Display's buttons with a loop that checks to see if buttons are pressed.
-
 import time
 import random
 from pimoroni import Button
 from picographics import PicoGraphics, DISPLAY_PICO_DISPLAY_2, PEN_P4
 
-# We're only using a few colours so we can use a 4 bit/16 colour palette and save RAM!
 display = PicoGraphics(display=DISPLAY_PICO_DISPLAY_2, pen_type=PEN_P4, rotate=0)
 
 display.set_backlight(0.5)
@@ -18,9 +15,6 @@ button_y = Button(15)
 
 WHITE = display.create_pen(255, 255, 255)
 BLACK = display.create_pen(0, 0, 0)
-CYAN = display.create_pen(0, 255, 255)
-MAGENTA = display.create_pen(255, 0, 255)
-YELLOW = display.create_pen(255, 255, 0)
 GREEN = display.create_pen(0, 255, 0)
 
 dice = [ 4, 6, 8, 10, 12, 20]
@@ -47,7 +41,7 @@ def select_dice(dice_i):
 clear()
 
 while True:
-    if button_a.read():                                   # if a button press is detected then...
+    if button_a.read():
         dice_i = select_dice(dice_i)
         cur_max = dice[dice_i]
         clear()
@@ -57,7 +51,7 @@ while True:
             num_dice -= 1
     elif button_x.read():
         clear()
-        display.set_pen(MAGENTA)
+        display.set_pen(WHITE)
         display.text("Rolled {}d{}".format(num_dice,cur_max), 40, 10, 320, 4)
         display.text("Result: {}".format(rand_int(cur_max,num_dice)), 40, 50, 320, 4)
         display.update()
@@ -75,5 +69,5 @@ while True:
         display.text("+".format(num_dice), 300, 180, 320, 4)
         display.text("# of dice = {}".format(num_dice), 60, 210, 320, 4)
         display.update()
-    time.sleep(0.0001)  # this number is how frequently the Pico checks for button presses
+    time.sleep(0.0001)
 
