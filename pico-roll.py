@@ -21,7 +21,7 @@ dice = [ 4, 6, 8, 10, 12, 20]
 dice_i = 1
 num_dice = 1
 cur_max = 4
-
+prev_result = None
 
 # sets up a handy function we can call to clear the screen
 def clear():
@@ -29,8 +29,11 @@ def clear():
     display.clear()
     display.update()
 
-def rand_int(dice, num_dice): return sum(random.randrange(1, dice+1) for _ in range(num_dice))
-
+def rand_int(dice, num_dice):
+    rolls = []
+    for _ in range(num_dice):
+        rolls.append(random.randrange(1, dice+1))
+    return (sum(rolls),rolls)
 def select_dice(dice_i):
     dice_i += 1
     if dice_i >= len(dice):
@@ -52,8 +55,9 @@ while True:
     elif button_x.read():
         clear()
         display.set_pen(WHITE)
-        display.text("Rolled {}d{}".format(num_dice,cur_max), 40, 10, 320, 4)
-        display.text("Result: {}".format(rand_int(cur_max,num_dice)), 40, 50, 320, 4)
+        display.text("Rolled {}d{}".format(num_dice,cur_max), 40, 10, 320, 3)
+        prev_result = rand_int(cur_max,num_dice)
+        display.text("Result: {}".format(prev_result), 40, 50, 320, 3)
         display.update()
         time.sleep(1)
         clear()
@@ -64,7 +68,9 @@ while True:
     else:
         display.set_pen(GREEN)
         display.text("d{}".format(cur_max), 10, 10, 320, 4)
-        display.text("roll".format(cur_max), 250, 10, 320, 4)
+        display.text("Roll".format(cur_max), 250, 10, 320, 4)
+        if prev_result != None:
+            display.text("{}".format(prev_result),100,50,320,3)
         display.text("-".format(num_dice), 10, 180, 320, 4)
         display.text("+".format(num_dice), 300, 180, 320, 4)
         display.text("# of dice = {}".format(num_dice), 60, 210, 320, 4)
